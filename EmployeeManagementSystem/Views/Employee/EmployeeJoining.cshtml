@@ -5,8 +5,12 @@
     .pull-right{
         float:right;
     }
+    select:has(option[value=""]:checked) {
+  color: gray;
+}
     
 </style>
+<link rel="stylesheet" href="~/css/multi-select-tag.css">
     </head> 
     <body>
         <section class="content">
@@ -124,6 +128,16 @@
                                       <option>User</option>
                                   </select>
                               </div>
+                              <div class="col-md-3 form-group">
+                                  <label>Country</label>
+                                  <select class="form-select" name="countries" id="countries" multiple >
+                                        <option value="1">Afghanistan</option>
+                                        <option value="2">Australia</option>
+                                        <option value="3">Germany</option>
+                                        <option value="4">Canada</option>
+                                        <option value="5">Russia</option>
+</select>
+                              </div>
                           </div>
                       </div>
                     </div>
@@ -141,6 +155,7 @@
 </html>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/multi-select-tag.js"></script>
 <script>
     function CreateNewEmployee()
     {
@@ -207,4 +222,7 @@
      }
      });
     }
+</script>
+<script>
+    new MultiSelectTag('countries')  // id
 </script>
