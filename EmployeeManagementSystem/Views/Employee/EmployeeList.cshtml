@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <script src="script.js" defer></script> <!-- Link to your JavaScript file -->
+</head>
+<body>
+    <header>
+        <h1>All Employee</h1>
+    </header>
+
+    <main>
+        <section>
+           <div class="row" >
+               <div class="col-md-12" style="overflow-x: auto;width:1800px; height: 400px;">
+                   <table class="table table-bordered">
+                       <thead class="table-light">
+                           <tr class="text-center">
+                               <th><input class="form-check-input" type="checkbox" id="Select_All" name="Select_All" />Select All</th>
+                               <th>EmpId </th>
+                               <th>Name </th>
+                               <th>MobNo </th>
+                               <th>Email </th>
+                               <th>DOB </th>
+                               <th>Status </th>
+                               <th>Address </th>
+                               <th>Sex </th>
+                               <th>Country </th>
+                               <th>State </th>
+                               <th>ZipCode </th>
+                               <th>Action </th>
+                           </tr>
+                       </thead>
+                       <tbody id="grdtable">
+                          
+
+                          
+                       </tbody>
+                   </table>
+                </div>
+           </div>
+        </section>
+        <section>
+            <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+               
+            </div>
+            <div class="modal-body">
+                Are you sure !! You want to Delete the record..
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <input type="button" class="btn btn-outline-danger float-right  " id="ConfirmDelete" value="Delete" />
+            </div>
+        </div>
+    </div>
+</div>
+        </section>
+
+        <section>
+            <div class="row">
+                <div class="col-md-12 ">
+                    <input type="button" class="btn btn-outline-danger float-right  " id="deleteEmp" value="Delete" />
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+    </footer>
+</body>
+</html>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+    GetAllEmployeeList()
+
+
+    $('body').on('click',"#Select_One", function(){
+       var check=$("#Select_One").is('checked',false);
+       if(check)
+       {
+       $("#Select_All").is('checked',false);
+       }
+   });
+
+    });
+</script>
+
+<script>
+    function GetAllEmployeeList()
+    {
+    $.ajax({
+     url:"/Employee/GetEmployeeList",
+     type:"get",
+     data:{},
+     dataType:"Json",
+    contentType: "application/json; charset=utf-8",
+     success:function(response){
+            var str=''
+             $.each(response,function(index,item){
+              str += ' <tr class="text-center"><td><input type="checkbox" class="form-check-input" id="Select_One" name="Select_One" value="'+item.id+'"/></td>'
+              str += '<td>'+item.id+' </td>'
+              str += '<td>'+item.name+' </td>'
+              str += '<td>'+item.mobileNo+' </td>'
+              str += '<td>'+item.email+' </td>'
+              str += '<td>'+item.dob+' </td>'
+              str += '<td>'+item.status+' </td>'
+              str += '<td>'+item.address+' </td>'
+              str += '<td>'+item.sex+' </td>'
+              str += '<td>'+item.country+' </td>'
+              str += '<td>'+item.state+' </td>'
+              str += '<td>'+item.zipCode+' </td>'
+              str += '<td><input type="button" class="btn " value="Edit"/><input type="button" class="btn " value="Delete"/></td> </tr>'
+             })
+             $("#grdtable").append(str);
+     },
+     error:function(response){
+     }
+    });
+    }
+
+
+
+</script>
+
+<script>
+
+    $("#Select_All").click(function(){
+    
+    let checkboxes = $("input[type='checkbox']");
+    let val = null;
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (val === null) {
+            val = checkboxes[i].checked;
+        } else {
+            checkboxes[i].checked = val;
+        }
+    }
+});
+</script>
+
+<script>
+    $("#deleteEmp").on("click", function(){
+    var item=[];
+    var checkedItem = $("input[name='Select_One']:checked");
+    for(var i=0 ; i<checkedItem.length; i++)
+    {
+    item[i]= checkedItem[i].value;
+    }
+    if(item.length != 0)
+    {
+    $("#confirm-delete").modal('show');
+    }
+    
+    });
+
+
+    $("#ConfirmDelete").on("click",function(){
+    var item=[];
+    var checkedItem = $("input[name='Select_One']:checked");
+    for(var i=0 ; i<checkedItem.length; i++)
+    {
+    item[i]= checkedItem[i].value;
+    }
+    $.ajax({
+    url:'/Employee/DeleteEmp',
+    type:'post',
+    data:{item},
+    ContentType:'',
+    success:function(responce)
+    {
+    $("#confirm-delete").modal('hide');
+    },
+    error:function(responce){}
+    });
+
+    });
+</script>
+

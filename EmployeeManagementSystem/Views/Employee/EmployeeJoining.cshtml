@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+<style>
+    .pull-right{
+        float:right;
+    }
+    
+</style>
+    </head> 
+    <body>
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-primary">
+                      <div class="box-header with-border">
+                          <div class="box-header with-border">
+                            <h3 class="box-title">Employee Details</h3>
+                            <div class="box-tools pull-right">
+
+                                 @*<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>*@
+                            </div>
+                        </div>
+                      </div>
+                      <div class="box-body">
+                          <div class="row ">
+                              <div class="col-md-3 form-group">
+                                  <label>Band</label>
+                                  <select class="form-select" id="band" aria-label="Default select example">
+                                    @foreach (var item in ViewBag.Band)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                  </select>
+                              </div>
+                              <div class="col-md-3 form-group">
+                                  <label>Emp-Id</label>
+                                  <input type="text" id="eid" disabled class="form-control" />
+                              </div>
+                              <div class="col-md-3 form-group">
+                                  <label>Employee Name</label>
+                                  <input type="text" id="ename" class="form-control" />
+                              </div>
+                              <div class="col-md-3 form-group">
+                                  <label>Email</label>
+                                  <input type="email" id="email" class="form-control" />
+                              </div>
+                          </div>
+                          <div class="row mt-3 ">
+                              <div class="col-md-3 form-group">
+                                  <label>Status</label>
+                                  <select class="form-select" id="status" aria-label="Default select example">
+                                    @foreach (var item in ViewBag.Status)
+                                    {
+                                            <option value="@item.Value">@item.Text</option>
+                                    }
+
+                                  </select>
+                              </div>
+                               <div class="col-md-3 form-group">
+                                  <label>Mob number</label>
+                                  <input type="number" id="mobno" class="form-control" />
+                              </div>
+                               <div class="col-md-3 form-group">  
+                                  <label>DOB</label>
+                                  <input type="date" id="dob" class="form-control" />
+                              </div>
+                              <div class="col-md-3 form-group">
+                                  <label>Sex</label>
+                                 <select class="form-select" id="sex" aria-label="Default select example">
+                                     <option>--select--</option>
+                                     <option>Male</option>
+                                     <option>FeMale</option>
+                                 </select>
+                             </div>
+                          </div>
+                          <div class="row mt-3">
+                              <div class="form-group col-md-12">
+                                    <label>Address </label>
+                                    <textarea autocomplete="off" class="form-control" cols="20" id="address" name="LastEmpAddress1" placeholder="Enter address 1." rows="2"></textarea>
+                                </div>
+                          </div>
+                          <div class="row mt-3">
+                              <div class="col-md-3 form-group">
+                                  <label>Country</label>
+                                  <input type="text" id="country" class="form-control" />
+                              </div>
+                              <div class="col-md-3 form-group">
+                                  <label>State</label>
+                                  <input type="text" id="state" class="form-control" />
+                              </div>
+                              <div class="col-md-3 form-group">
+                                  <label>ZipCode</label>
+                                  <input type="text" id="zipcode" class="form-control" />
+                              </div>
+                              <div class="col-md-3 form-group">
+                                  <label>Image</label>
+                                  <input type="file" id="image" class="form-control" />
+                              </div>
+                          </div>
+                          <div class="row">
+                          </div>
+                          
+                      </div>
+                    </div>
+
+                    <div class="box box-primary mt-4">
+                      <div class="box-header with-border">
+                          <div class="box-header with-border">
+                            <h3 class="box-title">Official Details</h3>
+                            <div class="box-tools pull-right">
+
+                            </div>
+                        </div>
+                      </div>
+                      <div class="box-body">
+                          <div class="row">
+                              <div class="col-md-3 form-group">
+                                  <label>Reporting Head Id</label>
+                                  <input type="text"  class="form-control" id="rhId" />
+                              </div>
+                              <div class="col-md-3 form-group">
+                                  <label>Role</label>
+                                  <select class="form-select" id="role" aria-label="Default select example" >
+                                      <option>--select--</option>
+                                      <option>Admin</option>
+                                      <option>User</option>
+                                  </select>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+       <div class="modal-footer mt-3">
+            <div class="row">
+            <div class="box-tools pull-right">
+               <input type="button" style="float:right" class="btn btn-success" id="btnSave" value="Save" onclick="CreateNewEmployee()"/>
+            </div>
+        </div>
+       </div>
+    </body>
+</html>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    function CreateNewEmployee()
+    {
+     var band = $("#band").val();
+     var ename = $("#ename").val();
+     var email = $("#email").val();
+     var status = $("#status").val();
+     var mobno = $("#mobno").val();
+     var dob = $("#dob").val();
+     var sex = $("#sex").val();
+     var address = $("#address").val();
+     var country = $("#country").val();
+     var state = $("#state").val();
+     var zipcode = $("#zipcode").val();
+     var RHead =$("#rhId").val();
+     var role =$("#role").val();
+     if(role=="--select--")
+     {
+     alert("please select a role..");
+     return;
+     }
+     var obj =
+     {
+         status : status,
+         dob:dob,
+         Name:ename,
+         Address:address,
+         Sex:sex,
+         ZipCode:zipcode,
+         Country:country,
+         State:state,
+         MobileNo:mobno,
+         Email:email,
+         RHead :RHead,
+         Role:role
+     };
+     //var data1=JSON.stringify(obj);
+     $.ajax({
+     url:'/Employee/EmployeeJoining',
+     type:'post',
+     data:obj,
+     //dataType:'json',
+     //contentType:'application/json',
+     success:function(responce)
+     {
+       alert(responce.msg);
+      $("#band").val("");
+      $("#ename").val("");
+      $("#email").val("");
+      $("#status").val("");
+      $("#mobno").val("");
+      $("#dob").val("");
+      $("#sex").val("");
+      $("#address").val("");
+      $("#country").val("");
+      $("#state").val("");
+      $("#zipcode").val("");
+      $("#role").val(" ");
+      $("#rhId").val(" ");
+     },
+     error: function(responce)
+     {
+         alert("error occur..");
+     }
+     });
+    }
+</script>

@@ -1,0 +1,115 @@
+﻿@*<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.6/jquery.jqgrid.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.6/css/ui.jqgrid.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>jqGrid Example</title>
+</head>
+<body>
+     
+<section class="content">
+<div class="row"> 
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+
+            </div>
+            <div class="box-body">
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>Employee</label>
+                        <input type="text" class="form-control" placeholder="employee name" />
+                    </div>
+                    <div class="col-md-3">
+                        <label>Employee Details</label>
+                        <input type="text" class="form-control" placeholder="employee name" />
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>Employee</label>
+                        <input type="text" class="form-control" placeholder="employee name" />
+                    </div>
+                    <div class="col-md-3">
+                        <label>Employee Details</label>
+                        <input type="text" class="form-control" placeholder="employee name" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <table id="grid"></table>
+    <div id="pager"></div>
+    <script>
+        $(document).ready(function () {
+            $("#grid").jqGrid({
+                url: '/Dashboard/GetEmpDetails',
+                datatype: 'json',
+                colModel: [
+                    { name: 'ID', key: true, width: 75 },
+                    { name: 'Name', width: 150 },
+                    { name: 'Age', width: 50 }
+                ],
+                pager: '#pager',
+                rowNum: 10,
+                rowList: [10, 20, 30],
+                sortname: 'ID',
+                viewrecords: true,
+                sortorder: 'asc',
+                caption: 'Employee Data'
+            });
+        });
+    </script>
+</div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+*@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CanvasJS Chart Example</title>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</head>
+<body>
+    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+
+    <script>
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            theme: "light2", // "light1", "light2", "dark1", "dark2"
+            title: {
+                text: "Simple Bar Chart"
+            },
+            data: [{
+                type: "column",
+                yValueFormatString: "#,### Vacancies",
+                dataPoints: [
+                    { label: "Apple", y: 10 },
+                    { label: "Banana", y: 15 },
+                    { label: "Cherry", y: 25 },
+                    { label: "Grapes", y: 30 },
+                    { label: "Mango", y: 28 }
+                ]
+            }]
+        });
+
+        chart.render();
+    </script>
+</body>
+</html>

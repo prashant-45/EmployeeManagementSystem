@@ -1,0 +1,279 @@
+﻿@{
+    Layout = null;
+    var errmsg= @TempData["errormsg"];
+}
+<html>
+    <head>
+        <title>EmployeeManagementSystem</title>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <style>
+            .warning {
+  border-color: red;
+  color: white;
+}
+
+.green {
+  border-color: rgba(144, 238, 144, 1);
+}
+
+.form-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+        </style>
+    </head>
+<body>
+ @*<div class="container">
+     <div class="row">
+         <div class="col-md-12">
+             <div class="row">
+
+                     <div class="col-sm-3">
+
+                     </div>
+                  <div class="col-md-6 " style=" height:300px ;  border-radius:5px;margin-top:100px; background-color:#D1D0CE;">
+                     <div class="text-center">
+                     <h1 class="display-4" >Login</h1><img class="user" src="https://i.ibb.co/yVGxFPR/2.png" height="100px" width="100px">
+                     </div>
+                        @if (errmsg != "") {
+                           <div>
+                                       <span style="color:red" id="errorspn">@errmsg</span>
+                           </div>
+                        }
+                        
+                     <div class="from-group ">
+                         
+                         <input type="text" id="Uid" class="form-control col-md-3" placeholder="username"/>
+                     </div>
+                     <div class="from-group">
+                         
+                         <input type="password" id="password" class="form-control col-md-3" placeholder="password" />
+                     </div>
+                     <div class="from-group mt-3 ml-5" style="float:right">
+                         <input type="button" class="btn btn-primary" id="btnsubmit" value="Login" onclick=CheckAuthUser()  />
+                     </div>
+                  </div>
+                    <div class="col-sm-3">
+
+                    </div>
+             </div>
+         </div>
+     </div>
+ </div>*@
+
+
+
+ <div class="container">
+     <div class="col-md-12">
+    <div class="row justify-content-center">
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-6 mt-5"> 
+            <div class="card mt-5">
+                <div class="card-header text-center">
+                    <img class="user" src="https://i.ibb.co/yVGxFPR/2.png" height="100px" width="100px">
+                </div>
+                <div class="card-body">
+
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="Uid" class="form-control " onkeyup="checkUser()" placeholder="Enter userId"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" class="form-control " placeholder="password" />
+                        </div>
+                        <div class="form-group mt-2">
+                        <input type="button" class="btn btn-primary" id="btnsubmit" value="Login" onclick=CheckAuthUser()  />
+                        </div>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-3"></div>
+        </div>
+    </div>  
+</div>
+
+
+
+<!-- Button trigger modal -->
+@*<button type="button" class="btn btn-primary " id="umodel"  onclick="openmodal()" hidden data-bs-toggle="modal" >
+  
+</button>
+*@
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Generate Password</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <div class="row">
+           <div class="col-md-12">
+               <div class="form-group">
+                   <input type="password" class="form-control" id="newpassword" placeholder="password" />
+               </div>
+               <div class="form-group mt-3">
+                   <input type="password" class="form-control" id="confnewpassword" placeholder="confirm password" />
+               </div>
+           </div>
+       </div>
+      </div>
+      <div class="modal-footer">
+         <input type="button"  class="btn btn-primary" onclick="GeneratePassword()" value="Generate" />
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> 
+
+    @*<div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Email address</label>
+  <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+</div>
+<div class="mb-3">
+  <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+</div>*@
+ <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+<script >
+
+    function CheckAuthUser()
+   {
+    var Uid= $("#Uid").val();
+    var password=$("#password").val();
+    if(Uid != "")
+    {
+     $("#Uid").removeClass("warning");
+    if(password == "")
+    {
+    $("#password").addClass("warning");
+    return false;
+    }
+    else
+    {
+    $("#password").removeClass("warning");    
+    }
+    }
+    else
+    {
+     if(password == "")
+    {
+    $("#password").addClass("warning");
+    $("#Uid").addClass("warning");
+    return false;
+    }
+    else
+    {
+    $("#Uid").addClass("warning");
+    return false;
+    }
+    }
+
+    $.ajax({
+    url:'/Login/CheckUserAuth',
+    type:'post',
+    datatype:'json',
+    data:{Uid:Uid , password:password},
+    contenttype:'aplication/json; charset=utf-8;',
+    success:function(response)
+    {
+    if(response.success)
+    {
+    window.location.href=response.redirecturl;
+    }
+    else{
+        // var spann="<span style='color:red'>user id  or password wrong..!</span>";
+        //$("#errorspn").append(spann);
+        window.location.href=response.errormsg;
+       
+        setTimeout(function(){
+            $("#errorspn span").html(" ")
+            ,3000});
+    }
+    },
+    error:function(xhr)
+    {
+    },
+    beforeSend:function(){},
+    complete:function(){}
+    });
+    }
+
+    //function openmodal()   
+    //{
+    //    $("#staticBackdrop").modal('show');
+    //}
+
+
+    function checkUser()
+    {
+     var id= $("#Uid").val();
+
+     $.ajax
+     ({
+         url:'/Login/CheckNewUser',
+         type:'get',
+         dataType:'json',
+         data:{id},
+         contenttype:'aplication/json; charset=utf-8;',
+         success: function(responce)
+         {
+             console.log(responce.success);
+             if(responce)
+             {
+             //$("#umodel").click();
+             $("#staticBackdrop").modal('show');
+             }
+         },
+         error:function(responce)
+         {
+         
+         }
+     });
+
+    }
+
+    function GeneratePassword()
+    {
+    var id= $("#Uid").val(); 
+    var npass= $("#newpassword").val();
+    var confnpass= $("#confnewpassword").val();
+    $.ajax({
+     url:'/Login/GenPassword',
+     type:'post',
+     data:{Uid : id , Npass: npass, Cnpass:confnpass},
+     //contentType:'application/json; charset=utf-8',
+     dataType:'Json',
+     beforeSend:function()
+     {
+     if(npass != confnpass)
+     {
+     alert("Password and Confirm password not match...");
+     return false;
+     }
+     },
+     success:function(responce)
+     {
+     alert(responce);
+     $("#newpassword").val(" ");
+     $("#confnewpassword").val(" ");
+     $("#staticBackdrop").modal("hide");
+     },
+     error:function(responce)
+     {
+     alert("Something went wrong...");
+     }
+    });
+    }
+
+
+</script>
