@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace EmployeeManagementSystem.EmpRepository
 {
@@ -143,6 +144,28 @@ namespace EmployeeManagementSystem.EmpRepository
             con.Open();
             int i = cmd.ExecuteNonQuery();
             return i;
+        }
+
+        public int DeleteEmployee(int[] uid) 
+        {
+            string con = _configuration.GetConnectionString("defaultConnection");
+            SqlConnection conn=new SqlConnection(con);
+            string str = "delete from emp_mst where emp_id in (";
+            for ( int i=0; i< uid.Length; i++) 
+            {
+            str += "" + uid[i] +"";
+                if (i<uid.Length-1) 
+                {
+                    str+= "," ;
+                }
+            }
+            str += ")";
+            SqlCommand cmd = new SqlCommand(str, conn);
+            cmd.CommandType= CommandType.Text;
+            conn.Open();
+            int j= cmd.ExecuteNonQuery();
+            conn.Close();
+            return j;
         }
     }
 }

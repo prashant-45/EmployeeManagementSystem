@@ -46,7 +46,7 @@ namespace EmployeeManagementSystem.Controllers
                 }
                 return  Json(new { success = true, msg });
             }
-            return Json("null");
+            return Json("error occured");
         }
 
         public SelectList GetBandName()
@@ -95,7 +95,13 @@ namespace EmployeeManagementSystem.Controllers
 
         public IActionResult DeleteEmp(int[] item)
         {
-            return Json("");
+            EmpStatus empStatus= new EmpStatus(_configuration);
+            int asdf = empStatus.DeleteEmployee(item);
+            if (asdf==1) 
+            {
+                return Json("Delete successfully...");
+            }
+            return Json("Error occur");
         }
     }
 }

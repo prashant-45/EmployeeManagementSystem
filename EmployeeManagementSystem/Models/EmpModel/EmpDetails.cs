@@ -18,5 +18,6 @@ namespace EmployeeManagementSystem.Models.EmpModel
         public string Email { get; set; }
         public string RHead { get; set; }
         public string Role { get; set; }
+        public int[] countries { get; set; }
     }
 }

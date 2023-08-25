@@ -5,7 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Page Title</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="script.js" defer></script> <!-- Link to your JavaScript file -->
+    <style>
+        .red-icon {
+    color: red;
+}
+.blue-icon
+{
+color:#0775A2 ;
+}
+    </style>
 </head>
 <body>
     <header>
@@ -78,6 +88,7 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
+
 <script>
     $(document).ready(function(){
     GetAllEmployeeList()
@@ -105,7 +116,7 @@
     contentType: "application/json; charset=utf-8",
      success:function(response){
             var str=''
-             $.each(response,function(index,item){
+             $.each(response,function(index,item){ 
               str += ' <tr class="text-center"><td><input type="checkbox" class="form-check-input" id="Select_One" name="Select_One" value="'+item.id+'"/></td>'
               str += '<td>'+item.id+' </td>'
               str += '<td>'+item.name+' </td>'
@@ -118,7 +129,7 @@
               str += '<td>'+item.country+' </td>'
               str += '<td>'+item.state+' </td>'
               str += '<td>'+item.zipCode+' </td>'
-              str += '<td><input type="button" class="btn " value="Edit"/><input type="button" class="btn " value="Delete"/></td> </tr>'
+              str += '<td><i class="bi bi-pencil blue-icon" onclick="EmpDisplay('+item.id+');"><span>&nbsp;&nbsp;&nbsp;</span></i></button><i class="bi bi-trash red-icon"></i></td> </tr>'
              })
              $("#grdtable").append(str);
      },
@@ -184,5 +195,14 @@
     });
 
     });
+</script>
+
+<script>
+     
+    function EmpDisplay(e)
+    {
+    alert("Haha");
+    }
+
 </script>
 
