@@ -5,7 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Page Title</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="script.js" defer></script> <!-- Link to your JavaScript file -->
+    <style>
+        .red-icon {
+    color: red;
+}
+.blue-icon
+{
+color:#0775A2 ;
+}
+    </style>
 </head>
 <body>
     <header>
@@ -69,6 +79,83 @@
                 </div>
             </div>
         </section>
+        <div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Edit Employee</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                       <div class="row">
+                           <div class="col-md-12">
+                               <div class="box box-primary">
+                                    <div class="box-header with-border">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Employee Details</h3>
+                                            <div class="box-tools pull-right">
+                                                @*<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>*@
+                                                <button type="button" class="btn btn-danger" id="btnCancel" onclick="remove()"><i class="fa fa-refresh"></i>&nbsp;Clear</button>
+                                                <button type="button" id="btnsearch" class="btn btn-default" data-toggle="modal" data-target="#mdlsearch"><i class="fa fa-search"></i>&nbsp;Search</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   <div class="box-body mt-5">
+                                       <div class="row">
+                                            <div class="col-md-3 form-group">
+                                               <label>Band</label>
+                                                <select id="band" class="form-select" >
+                                                    <option>--select--</option>
+                                                </select>
+                                           </div>
+                                           <div class="col-md-3 form-group">
+                                               <label>Emp Id</label>
+                                               <input type="text"  id="empid" class="form-control"/>
+                                           </div>
+                                            <div class="col-md-3 form-group">
+                                                <label>Name</label>
+                                                <input type="text" id="empname" class="form-control" />
+                                            </div>
+                                            <div class="col-md-3 form-group">
+                                                <label>Email</label>
+                                                <input type="email" id="empemail" class="form-control" />
+                                            </div>
+                                       </div>
+                                       <div class="row">
+                                            <div class="col-md-3 form-group">
+                                               <label>Status</label>
+                                                <select id="status" class="form-select" >
+                                                </select>
+                                           </div>
+                                           <div class="col-md-3 form-group">
+                                               <label>Mobile Number</label>
+                                               <input type="text"  id="mobno" class="form-control"/>
+                                           </div>
+                                            <div class="col-md-3 form-group">
+                                                <label>DOB</label>
+                                                <input type="date" id="dob" class="form-control" />
+                                            </div>
+                                            <div class="col-md-3 form-group">
+                                                <label>Sex</label>
+                                                <select class="form-select" id="sex">
+                                                    <option>--select--</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="FeMale">FeMale</option>
+                                                </select>
+                                            </div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Understood</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer>
@@ -77,6 +164,7 @@
 </html>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <script>
     $(document).ready(function(){
@@ -105,7 +193,7 @@
     contentType: "application/json; charset=utf-8",
      success:function(response){
             var str=''
-             $.each(response,function(index,item){
+             $.each(response,function(index,item){ 
               str += ' <tr class="text-center"><td><input type="checkbox" class="form-check-input" id="Select_One" name="Select_One" value="'+item.id+'"/></td>'
               str += '<td>'+item.id+' </td>'
               str += '<td>'+item.name+' </td>'
@@ -118,7 +206,7 @@
               str += '<td>'+item.country+' </td>'
               str += '<td>'+item.state+' </td>'
               str += '<td>'+item.zipCode+' </td>'
-              str += '<td><input type="button" class="btn " value="Edit"/><input type="button" class="btn " value="Delete"/></td> </tr>'
+                    str += '<td><i class="bi bi-pencil blue-icon" onclick="EmpEdit(' + item.id + ');"><span>&nbsp;&nbsp;&nbsp;</span></i></button><i class="bi bi-trash red-icon"></i></td> </tr>'
              })
              $("#grdtable").append(str);
      },
@@ -184,5 +272,74 @@
     });
 
     });
+</script>
+
+<script>
+      
+    function EmpEdit(e)
+    {
+        var sel=e;
+        $.ajax({
+        url:"/Employee/GetSingleEmp",
+        type:"get",
+        data: { id: sel },
+        ContentType:"",
+        success:function(responce)
+        {
+           $("#staticBackdrop").modal('show');
+           $("#band").html("");
+                $("#status").html("");
+           BindBand(responce.band);
+                $("#empid").val(responce.id);
+                $("#empname").val(responce.name);
+                $("#empemail").val(responce.email);
+           BindStatus(responce.status);
+                $("#mobno").val(responce.mobileNo);
+                responce.dob = ConvertToDate(responce.dob, "dd-MMM-yyyy");
+                $("#dob").val(responce.dob);
+                $("#sex").val(responce.sex);
+        },
+        error: function (responce)
+        { }
+        });
+    }
+
+    function BindBand(band)
+    {
+        $.ajax({
+            url: "/Employee/BindBand",
+            type: "get",
+            ContentType: "",
+            success: function (responce)
+            {
+                $.each(responce, function(i,v){
+                    $("#band").append("<option value=" + v.value + ">" + v.text + "</option>");
+                });
+                $("#band").val(band);
+
+            },
+            error: function (responce) 
+            {
+            }
+        });
+    }
+
+    function BindStatus(status) {
+        $.ajax({
+            url: "/Employee/BindStatus",
+            type: "get",
+            ContentType: "",
+            success: function (responce) {
+                $.each(responce, function (i, v) {
+                    $("#status").append("<option value=" + v.value + ">" + v.text + "</option>");
+                });
+                $("#status").val(status);
+
+            },
+            error: function (responce) {
+            }
+        });
+    }
+
 </script>
 
