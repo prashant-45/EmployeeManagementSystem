@@ -93,6 +93,23 @@ namespace EmployeeManagementSystem.Controllers
             return Json(list);
         }
 
+        public IActionResult GetSingleEmp(int id) 
+        {
+            EmpStatus empStatus = new EmpStatus(_configuration);
+            ViewBag.Band = GetBandName();
+            EmpDetails data= empStatus.GetSingleEmployee(id);
+            return Json(data);
+        }
+        public IActionResult BindBand()
+        {
+            var asdf= GetBandName();
+            return Json(asdf);
+        }
+        public IActionResult BindStatus()
+        {
+            var asdf = GetStatusName();
+            return Json(asdf);
+        }
         public IActionResult DeleteEmp(int[] item)
         {
             EmpStatus empStatus= new EmpStatus(_configuration);

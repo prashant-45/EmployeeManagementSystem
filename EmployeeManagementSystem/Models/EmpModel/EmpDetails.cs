@@ -9,6 +9,7 @@ namespace EmployeeManagementSystem.Models.EmpModel
         public string Dob { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
+        public string Band { get; set; }
         public string Sex { get; set; }
         public int ZipCode { get; set; }
         public string Country { get; set; }

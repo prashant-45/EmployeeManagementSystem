@@ -1,5 +1,6 @@
 ﻿using EmployeeManagementSystem.Models.EmpModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -48,7 +49,19 @@ namespace EmployeeManagementSystem.EmpRepository
             da.Fill(dt);
             return dt;
         }
-
+        public DataTable GetEmpById(int id)
+        {
+            DataTable dt = new DataTable();
+            string connection = _configuration.GetConnectionString("defaultConnection");
+            SqlConnection con = new SqlConnection(connection);
+            string str = "select emp_id,emp_status,Band, Dob,name,Sex,P_Address,P_Zip,P_State,P_Country,MobileNo,Email_Id from Emp_mst where Emp_id="+id+"";
+            SqlCommand cmd = new SqlCommand(str, con);
+            cmd.CommandType = System.Data.CommandType.Text;
+            con.Open();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            return dt;
+        }
         public DataTable GetAllEmployee() 
         {
             DataTable dt = new DataTable();
@@ -88,6 +101,34 @@ namespace EmployeeManagementSystem.EmpRepository
             return list;
 
         
+        }
+
+        public EmpDetails GetSingleEmployee(int id)
+        {
+            EmpDetails emp = new EmpDetails();
+            DataTable dt = GetEmpById(id);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    emp.Id = Convert.ToInt32(dr["Emp_id"]);
+                    emp.Name = dr["name"].ToString();
+                    emp.Status = dr["emp_status"].ToString();
+                    emp.Band = dr["Band"].ToString();
+                    emp.Dob = Convert.ToString(dr["Dob"]);
+                    emp.Sex = dr["Sex"].ToString();
+                    emp.Address = dr["P_Address"].ToString();
+                    emp.ZipCode = Convert.ToInt32(dr["P_Zip"]);
+                    emp.State = Convert.ToString(dr["P_State"]);
+                    emp.Country = dr["P_Country"].ToString();
+                    emp.MobileNo = Convert.ToInt32(dr["MobileNo"]);
+                    emp.Email = dr["Email_Id"].ToString();
+                    
+                }
+            }
+            return emp ;
+
+
         }
 
         public bool createEmp(EmpDetails emp) 
