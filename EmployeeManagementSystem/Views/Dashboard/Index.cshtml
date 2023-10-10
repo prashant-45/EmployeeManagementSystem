@@ -87,8 +87,14 @@
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
 <body>
-    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+    <div class="row">
+        <div id="chartContainer" style="height: 300px; width: 50%;">
+        </div>
+        <div id="chartContainer1" style="height: 300px; width: 50%;">
 
+        </div>
+    </div>
+     
     <script>
         var chart = new CanvasJS.Chart("chartContainer", {
             animationEnabled: true,
@@ -97,19 +103,43 @@
                 text: "Simple Bar Chart"
             },
             data: [{
-                type: "column",
+                type: "pie",
                 yValueFormatString: "#,### Vacancies",
                 dataPoints: [
-                    { label: "Apple", y: 10 },
+                    { label: "Apple", y: 50 },
                     { label: "Banana", y: 15 },
                     { label: "Cherry", y: 25 },
-                    { label: "Grapes", y: 30 },
-                    { label: "Mango", y: 28 }
+                    { label: "Grapes", y: 30 }
                 ]
             }]
         });
 
         chart.render();
+
+
+
+        var options = {
+            theme: "light2",
+            title: {
+                text: "Population Chart"
+            },
+            data: [{
+                type: "pie",
+                yValueFormatString: "#,### Peoples",
+                dataPoints: [
+                    { label: "Men", y: 70 },
+                    { label: "WoMen", y: 60 },
+                    { label: "Children", y: 50 }
+
+                ]
+
+            }]
+
+        };
+        var charts = new CanvasJS.Chart("chartContainer1", options);
+        charts.render();
     </script>
+
+    
 </body>
 </html>

@@ -29,12 +29,14 @@ namespace EmployeeManagementSystem.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult EmployeeJoining(EmpDetails emp)
+        public IActionResult EmployeeJoining([FromBody]EmpDetails emp)
         {
             if (ModelState.IsValid) 
             {
                 string msg = "";
                 EmpStatus empStatus = new EmpStatus(_configuration);
+
+
                 bool check = empStatus.createEmp(emp);
                 if (check) 
                 {

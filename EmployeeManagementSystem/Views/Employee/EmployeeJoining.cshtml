@@ -120,7 +120,8 @@
                               </div>
                               <div class="col-md-3 form-group">
                                   <label>Image</label>
-                                  <input type="file" id="image" class="form-control" />
+                                    <input type="file" id="image" class="form-control" accept=".jpg, .jpeg, .png" />
+                                    <span id="errorContainer"></span>
                               </div>
                           </div>
                       </div>
@@ -180,6 +181,27 @@
 @*<script src="~/js/multi-select-tag.js"></script>*@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js" type="text/javascript"></script>
 <script>
+    var imagefile;
+    
+    
+        $('#image').on('change', function () {
+            debugger;
+            var fileInput = this;
+              imagefile = $("#image")[0].files[0];
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+
+            if (!allowedExtensions.exec(fileInput.value)) {
+                $('#errorContainer').text('Please select a valid image file (JPEG or PNG).');
+                fileInput.value = '';
+                return false;
+            } else {
+                $('#errorContainer').text('');
+            }
+        });
+   
+
+   
+
     function CreateNewEmployee()
     {
      var band = $("#band").val();
@@ -196,53 +218,73 @@
      var RHead =$("#rhId").val();
      var role =$("#role").val();
      var item=$("#countries").val();
+     
      if(role=="--select--")
      {
      alert("please select a role..");
      return;
      }
-     var obj =
-     {
-         status : status,
-         dob:dob,
-         Name:ename,
-         Address:address,
-         Sex:sex,
-         ZipCode:zipcode,
-         Country:country,
-         State:state,
-         MobileNo:mobno,
-         Email:email,
-         RHead :RHead,
-         Role:role,
-         countries:item
-     };
+     
+        var image = imagefile;
+        var reader;
+        if (image) {
+              reader = new FileReader();
+            reader.onload = function(e)
+            {
+              var ImageData = new Uint8Array(e.target.result);
+              var Imagefile = image.name;
+                var obj =
+                {
+                    status: status,
+                    dob: dob,
+                    Name: ename,
+                    Address: address,
+                    Sex: sex,
+                    ZipCode: zipcode,
+                    Country: country,
+                    State: state,
+                    MobileNo: mobno,
+                    Email: email,
+                    RHead: RHead,
+                    Role: role,
+                    imageData: ImageData,
+                    imagefile: Imagefile,
+                    countries: item
+                };
+                $.ajax({
+                    url: '/Employee/EmployeeJoining',
+                    type: 'post',
+                    data: JSON.stringify(obj),
+                    //dataType:'json',
+                    contentType: 'application/json',
+                    success: function (responce) {
+                        if (responce.msg != null) {
+                            alert(responce.msg);
+                            ClearJoiningForm();
+                        }
+                        else {
+                            alert(responce);
+                            ClearJoiningForm();
+                        }
+
+                    },
+                    error: function (responce) {
+                        alert("error occur..");
+                    }
+                });
+            }
+        }
+        else {
+            alert("please select image...");
+            return;
+        }
+
+        //for (var key of formdata.keys()) {
+        //    obj[key] = formdata.get(key);
+        //}
+
      //var data1=JSON.stringify(obj);
-     $.ajax({
-     url:'/Employee/EmployeeJoining',
-     type:'post',
-     data:obj,
-     //dataType:'json',
-     //contentType:'application/json',
-     success:function(responce)
-     {
-      if(responce.msg != null)
-       {
-        alert(responce.msg);
-        ClearJoiningForm();
-       }
-       else
-       {
-       alert(responce);
-       ClearJoiningForm();
-       }
-      
-     },
-     error: function(responce)
-     {
-         alert("error occur..");
-     }
-     });
+    
     }
 
     function ClearJoiningForm()
@@ -266,13 +308,13 @@
     new MultiSelectTag('countries')  // id
 </script>*@
 
-      <script type="text/javascript">
+      @*<script type="text/javascript">
         $(function () {
             $('.listbox').multiselect({
                 includeSelectAllOption: true
             });
         });
-    </script>
+    </script>*@
 
       <script>
      

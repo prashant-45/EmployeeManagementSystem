@@ -20,5 +20,8 @@ namespace EmployeeManagementSystem.Models.EmpModel
         public string RHead { get; set; }
         public string Role { get; set; }
         public int[] countries { get; set; }
+        public string imageData { get; set; }
+        public string imagefile { get; set; }
+
     }
 }
